@@ -35,7 +35,7 @@ struct EIGEN_ALIGN16 PointXYZIRTRAR
 
 // Register the custom point type with PCL
 POINT_CLOUD_REGISTER_POINT_STRUCT(PointXYZIRTRAR,
-                                  (float, x, x)(float, y, y)(float, z, z)(float, intensity, intensity)(uint32_t, t, t)(uint16_t, reflectivity, reflectivity)(uint16_t, ring, ring))(uint16_t, ambient, ambient)(std::uint32_t, range, range));
+                                  (float, x, x)(float, y, y)(float, z, z)(float, intensity, intensity)(uint32_t, t, t)(uint16_t, reflectivity, reflectivity)(uint16_t, ring, ring)(uint16_t, ambient, ambient)(std::uint32_t, range, range));
 
 class LidarClipperNode : public rclcpp::Node
 {
@@ -141,7 +141,10 @@ private:
                 bag_writer_.write(serialized_bag_msg);
 
                 // Release memory
-                rcutils_uint8_array_fini(serialized_bag_msg->serialized_data.get());
+                if (rcutils_uint8_array_fini(serialized_bag_msg->serialized_data.get()) != RCUTILS_RET_OK)
+                {
+                    RCLCPP_ERROR(this->get_logger(), "Failed to finalize uint8 array for PointCloud2");
+                }
             }
             else if (bag_message->topic_name == "/ouster/imu")
             {
@@ -165,7 +168,10 @@ private:
                 bag_writer_.write(serialized_bag_msg);
 
                 // Release memory
-                rcutils_uint8_array_fini(serialized_bag_msg->serialized_data.get());
+                if (rcutils_uint8_array_fini(serialized_bag_msg->serialized_data.get()) != RCUTILS_RET_OK)
+                {
+                    RCLCPP_ERROR(this->get_logger(), "Failed to finalize uint8 array for IMU");
+                }
             }
         }
 
