@@ -43,13 +43,17 @@ public:
     LidarClipperNode()
         : Node("lidar_clipper_node")
     {
-        // Define the input and output bag paths
-        input_bag_path_ = "/home/zed/thesis_ws/src/bagFiles/saxion_around";    // Update this path
-        output_bag_path_ = "/home/zed/thesis_ws/src/bagFiles/saxion_fig8path"; // Update this path
+        // Declare parameters
+        this->declare_parameter<std::string>("input_bag_path", "/home/zed/thesis_ws/src/bagFiles/saxion_around");
+        this->declare_parameter<std::string>("output_bag_path", "/home/zed/thesis_ws/src/bagFiles/saxion_fig8path");
+        this->declare_parameter<double>("min_z", -30.0);
+        this->declare_parameter<double>("max_z", 10.0);
 
-        // Define the vertical clipping range (in meters)
-        min_z_ = -30.0;
-        max_z_ = 10.0;
+        // Get parameters
+        input_bag_path_ = this->get_parameter("input_bag_path").as_string();
+        output_bag_path_ = this->get_parameter("output_bag_path").as_string();
+        min_z_ = this->get_parameter("min_z").as_double();
+        max_z_ = this->get_parameter("max_z").as_double();
 
         // Open the input bag
         bag_reader_.open(input_bag_path_);
