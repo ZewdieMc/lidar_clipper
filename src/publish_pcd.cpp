@@ -33,7 +33,7 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(PointXYZIRTRAR,
 class PCDPublisher : public rclcpp::Node
 {
 public:
-    PCDPublisher() : Node("pcd_publisher"), map_voxel_size_(0.25)
+    PCDPublisher() : Node("pcd_publisher"), map_voxel_size_(0.7)
     {
         this->declare_parameter<std::string>("pcd_file_path", "");
         this->get_parameter("pcd_file_path", pcd_file_path_);
@@ -61,19 +61,19 @@ private:
         std::vector<int> indices;
         pcl::removeNaNFromPointCloud(*cloud, *cloud, indices);
 
-        // pcl::PointCloud<pcl::PointXYZI>::Ptr filtered_cloud(new pcl::PointCloud<pcl::PointXYZI>);
-        // pcl::VoxelGrid<pcl::PointXYZI> sor;
-        // sor.setInputCloud(cloud);
-        // sor.setLeafSize(map_voxel_size_, map_voxel_size_, map_voxel_size_);
-        // sor.filter(*filtered_cloud);
+        pcl::PointCloud<PointXYZIRTRAR>::Ptr cloud_filtered(new pcl::PointCloud<PointXYZIRTRAR>);
+        pcl::VoxelGrid<PointXYZIRTRAR> sor;
+        sor.setInputCloud(cloud);
+        sor.setLeafSize(map_voxel_size_, map_voxel_size_, map_voxel_size_);
+        sor.filter(*cloud_filtered);
 
         // Clip the point cloud vertically
         pcl::PassThrough<PointXYZIRTRAR> pass;
-        pass.setInputCloud(cloud);
-        pass.setFilterFieldName("z");
-        pass.setFilterLimits(-4, 0.5);
-        pcl::PointCloud<PointXYZIRTRAR>::Ptr cloud_filtered(new pcl::PointCloud<PointXYZIRTRAR>);
-        pass.filter(*cloud_filtered);
+        // pass.setInputCloud(cloud);
+        // pass.setFilterFieldName("z");
+        // pass.setFilterLimits(-4, 0.5);
+        // pcl::PointCloud<PointXYZIRTRAR>::Ptr cloud_filtered(new pcl::PointCloud<PointXYZIRTRAR>);
+        // pass.filter(*cloud_filtered);
 
         sensor_msgs::msg::PointCloud2 cloud_msg;
         pcl::toROSMsg(*cloud_filtered, cloud_msg);

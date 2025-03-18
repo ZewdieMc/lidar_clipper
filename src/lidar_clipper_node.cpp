@@ -45,7 +45,7 @@ public:
     {
         // Declare parameters
         this->declare_parameter<std::string>("input_bag_path", "/home/zed/thesis_ws/src/bagFiles/saxion_around");
-        this->declare_parameter<std::string>("output_bag_path", "/home/zed/thesis_ws/src/bagFiles/saxion_fig8path");
+        this->declare_parameter<std::string>("output_bag_path", "/home/zed/thesis_ws/src/bagFiles/saxion_second");
         this->declare_parameter<double>("min_z", -30.0);
         this->declare_parameter<double>("max_z", 10.0);
 

@@ -13,7 +13,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'output_bag_path',
-            default_value='/home/zed/thesis_ws/src/bagFiles/saxion_fig8path',
+            default_value='/home/zed/thesis_ws/src/bagFiles/saxion_second',
             description='Path to the output bag file'
         ),
         DeclareLaunchArgument(
