@@ -1,7 +1,8 @@
 ## How to run
 ### To clip lidar and reduce bag size
 ```
-ros2 run lidar_clipper lidar_clipper_node
+<!-- ros2 run lidar_clipper lidar_clipper_node -->
+ros2 launch lidar_clipper lidar_clipper_launch.py
 ```
 ### To publish pcd file to a ros2 topic
 ```
